@@ -1,0 +1,25 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.env
+.env
+.venv
+env/
+venv/
+.DS_Store
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
+*.log
+.streamlit/secrets.toml
+
+# Notebook output images — generated at runtime, not committed
+notebooks/*.png
+notebooks/*.jpg
+notebooks/*.jpeg
+notebooks/*.svg
+notebooks/*.pdf

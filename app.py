@@ -4,7 +4,7 @@ Kenya Economic Pulse — Main Streamlit Application
 Author: Stephen Muema | Data Scientist & ML Engineer
 Portfolio: https://muemastephenportfolio.netlify.app/
 GitHub:    https://github.com/kaks2679/project
-Version:   2.2.0  |  April 2026
+Version:   2.3.0  |  April 2026
 """
 
 import streamlit as st
@@ -26,8 +26,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
     menu_items={
         "Get Help":    "https://github.com/kaks2679/project",
-        "Report a bug":"mailto:stephenmuema@proton.me",
-        "About":       "Kenya Economic Pulse v2.2 — Built by Stephen Muema, Data Scientist",
+        "Report a bug": "mailto:stephenmuema@proton.me",
+        "About":       "Kenya Economic Pulse v2.3 — Built by Stephen Muema, Data Scientist",
     }
 )
 
@@ -68,8 +68,17 @@ st.markdown("""
     ::-webkit-scrollbar-track  { background: #0E1117; }
     ::-webkit-scrollbar-thumb  { background: #2C3E50; border-radius: 3px; }
 
-    div[data-testid="stRadio"] > label { color: #AAB7B8 !important; font-size: .9rem; }
-    div[data-testid="stRadio"] > div > label { color: #ECF0F1 !important; }
+    /* Sidebar navigation styling */
+    [data-testid="stSidebarNav"] {
+        background: transparent;
+    }
+    [data-testid="stSidebarNav"]::before {
+        content: "Kenya Economic Pulse";
+        display: block;
+        font-size: 1.5rem;
+        text-align: center;
+        padding: 1rem 0 0.5rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -88,32 +97,18 @@ from pages import (
     developer,
 )
 
-# ── Navigation pages ─────────────────────────────────────────────────
-PAGES = [
-    "🏠 Overview",
-    "📊 Economic Indicators",
-    "🗺️ County Inequality Map",
-    "💚 M-Pesa Impact Predictor",
-    "🎓 Youth Unemployment",
-    "🔮 Economic Forecaster",
-    "⚖️ County Comparison",
-    "🏛️ Policy Simulator",
-    "🔍 Anomaly Detection",
-    "💬 NL Query Engine",
-    "👨‍💻 Developer / About",
-]
-
 # ── Data loading with caching ────────────────────────────────────────
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_data():
     return get_all_data()
 
 
-# ── Overview page ────────────────────────────────────────────────────
-def render_overview(data: dict):
-    macro  = data["macro"]
-    mm     = data["mobile_money"]
-    yu     = data["youth_unemp"]
+# ── Overview page render function ────────────────────────────────────
+def render_overview():
+    data = load_data()
+    macro = data["macro"]
+    mm = data["mobile_money"]
+    yu = data["youth_unemp"]
     county = data["county"]
 
     # Hero banner — compact
@@ -144,10 +139,10 @@ def render_overview(data: dict):
     # KPI strip
     st.markdown("### 🌍 Kenya at a Glance")
     c1, c2, c3, c4, c5, c6 = st.columns(6)
-    last_mm  = mm.iloc[-1]
-    last_yu  = yu.iloc[-1]
-    gdp_val  = macro["GDP Growth (%)"].dropna().iloc[-1] if "GDP Growth (%)" in macro.columns else 4.8
-    inf_val  = macro["Inflation Rate (%)"].dropna().iloc[-1] if "Inflation Rate (%)" in macro.columns else 7.8
+    last_mm = mm.iloc[-1]
+    last_yu = yu.iloc[-1]
+    gdp_val = macro["GDP Growth (%)"].dropna().iloc[-1] if "GDP Growth (%)" in macro.columns else 4.8
+    inf_val = macro["Inflation Rate (%)"].dropna().iloc[-1] if "Inflation Rate (%)" in macro.columns else 7.8
 
     kpis = [
         ("🇰🇪 Population",   "56.4M",                                   "#3498DB"),
@@ -197,7 +192,7 @@ def render_overview(data: dict):
             margin=dict(l=10, r=10, t=30, b=20)
         )
         fig.update_yaxes(gridcolor="#2C3E50", secondary_y=False, title_text="GDP Growth (%)")
-        fig.update_yaxes(gridcolor="#2C3E50", secondary_y=True,  title_text="Poverty (%)")
+        fig.update_yaxes(gridcolor="#2C3E50", secondary_y=True, title_text="Poverty (%)")
         st.plotly_chart(fig, use_container_width=True)
 
     with col_right:
@@ -230,7 +225,7 @@ def render_overview(data: dict):
     st.markdown("#### 🗺️ County Poverty Snapshot — Top 10 vs Bottom 10")
     top_poor = county.nlargest(10, "Poverty_Rate")[["County", "Poverty_Rate", "Region"]]
     top_rich = county.nsmallest(10, "Poverty_Rate")[["County", "Poverty_Rate", "Region"]]
-    snap_df  = pd.concat([
+    snap_df = pd.concat([
         top_poor.assign(Type="Highest Poverty"),
         top_rich.assign(Type="Lowest Poverty")
     ])
@@ -278,7 +273,7 @@ def render_overview(data: dict):
     )
     st.plotly_chart(fig_yu, use_container_width=True)
 
-    # ── Report download ──────────────────────────────────────────────
+    # Report download
     st.markdown("---")
     st.markdown("### 📥 Download Executive Summary Report")
     rpt_col1, rpt_col2, rpt_col3 = st.columns([2, 2, 3])
@@ -322,7 +317,7 @@ def render_overview(data: dict):
         </div>
         """, unsafe_allow_html=True)
 
-    # ── Stakeholder insights ─────────────────────────────────────────
+    # Stakeholder insights
     st.markdown("---")
     st.markdown("""
     <div style='background:#1C2833; padding:1.2rem 1.5rem; border-radius:12px;
@@ -342,7 +337,7 @@ def render_overview(data: dict):
                 <p style='color:#AAB7B8; font-size:.8rem; margin:.3rem 0 0; line-height:1.6;'>
                     <b>Economic Indicators</b> page shows GDP, inflation, debt trends with 5-year forecasts.
                     <b>Economic Forecaster</b> provides ARIMA + Holt-Winters projections with confidence intervals.
-                    <b>M-Pesa Impact</b> quantifies digital finance market opportunity.
+                    <b>Safaricom M-PESA Impact</b> quantifies digital finance market opportunity.
                 </p>
             </div>
             <div style='background:#0E1117; padding:.7rem 1rem; border-radius:8px; border-left:3px solid #F39C12;'>
@@ -375,7 +370,7 @@ def render_overview(data: dict):
         |------|-------------|
         | 📊 Economic Indicators | 20+ macro indicators · Holt-Winters + ARIMA forecasts |
         | 🗺️ County Inequality Map | 47 counties · KMeans clustering · Folium choropleth |
-        | 💚 M-Pesa Impact Predictor | GBM regression R²=0.904 · Feature importance |
+        | 💳 M-PESA Impact Predictor | GBM regression R²=0.904 · Feature importance |
         | 🎓 Youth Unemployment | ML forecast · Scenario simulator |
         | 🔮 Economic Forecaster | Holt-Winters + ARIMA(2,1,2) · Confidence intervals |
         | ⚖️ County Comparison | Up to 5 counties · Radar + bar charts |
@@ -389,79 +384,149 @@ def render_overview(data: dict):
         """)
 
 
-# ── Sidebar navigation ───────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("""
-    <div style='text-align:center; padding:1rem 0;'>
-        <div style='font-size:3rem'>🇰🇪</div>
-        <h2 style='color:#3498DB; margin:.3rem 0; font-size:1.2rem'>Kenya Economic Pulse</h2>
-        <p style='color:#7F8C8D; font-size:.75rem; margin:0'>by Stephen Muema · v2.2.0</p>
-        <hr style='border-color:#2C3E50; margin:.8rem 0'>
-    </div>
-    """, unsafe_allow_html=True)
+# ── Define wrapper functions to ensure unique URL pathnames ─────────
+# Each wrapper has a unique function name to prevent duplicate pathname errors
 
-    page = st.radio(
-        "📌 Navigate",
-        PAGES,
-        key="nav_page"
-    )
+def page_overview():
+    render_overview()
 
-    st.markdown("<hr style='border-color:#2C3E50'>", unsafe_allow_html=True)
-
-    st.markdown("""
-    <div style='background:#1C2833; padding:.8rem; border-radius:8px; font-size:.78rem;'>
-        <b style='color:#3498DB'>📡 Data Sources</b><br>
-        <span style='color:#AAB7B8'>
-        • World Bank Open API<br>
-        • KNBS 2019 Census<br>
-        • CBK Annual Reports<br>
-        • ILO Labour Statistics<br>
-        • FinAccess Survey 2021<br>
-        • KIHBS 2021
-        </span>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    st.markdown("""
-    <div style='text-align:center; font-size:.74rem; color:#566573;'>
-        Built with ❤️ by<br>
-        <a href='https://muemastephenportfolio.netlify.app/'
-           style='color:#3498DB; text-decoration:none;'>Stephen Muema</a><br>
-        Data Scientist &amp; ML Engineer<br>
-        Nairobi, Kenya 🇰🇪<br><br>
-        <a href='https://github.com/kaks2679/project'
-           style='color:#566573; text-decoration:none;'>🐙 GitHub Repo</a>
-    </div>
-    """, unsafe_allow_html=True)
-
-
-# ── Load data ────────────────────────────────────────────────────────
-with st.spinner("🔄 Loading Kenya economic data..."):
+def page_economic_indicators():
     data = load_data()
-
-
-# ── Route pages ──────────────────────────────────────────────────────
-if page == "🏠 Overview":
-    render_overview(data)
-elif page == "📊 Economic Indicators":
     economic_indicators.render(data)
-elif page == "🗺️ County Inequality Map":
+
+def page_county_inequality():
+    data = load_data()
     county_inequality.render(data)
-elif page == "💚 M-Pesa Impact Predictor":
+
+def page_mpesa_predictor():
+    data = load_data()
     mobile_money.render(data)
-elif page == "🎓 Youth Unemployment":
+
+def page_youth_unemployment():
+    data = load_data()
     youth_unemployment.render(data)
-elif page == "🔮 Economic Forecaster":
+
+def page_economic_forecaster():
+    data = load_data()
     forecaster.render(data)
-elif page == "⚖️ County Comparison":
+
+def page_county_comparison():
+    data = load_data()
     county_comparison.render(data)
-elif page == "🏛️ Policy Simulator":
+
+def page_policy_simulator():
+    data = load_data()
     policy_simulator.render(data)
-elif page == "🔍 Anomaly Detection":
+
+def page_anomaly_detection():
+    data = load_data()
     anomaly_detection.render(data)
-elif page == "💬 NL Query Engine":
+
+def page_nlq_engine():
+    data = load_data()
     nlq_engine.render(data)
-elif page == "👨‍💻 Developer / About":
+
+def page_developer():
+    data = load_data()
     developer.render(data)
+
+
+# ── Define pages for st.navigation with unique function references ───
+# Each st.Page gets a unique function (the wrapper functions above)
+
+# Core Analysis pages
+overview_page = st.Page(
+    page_overview,
+    title="Overview",
+    icon="🏠"
+)
+
+economic_page = st.Page(
+    page_economic_indicators,
+    title="Economic Indicators",
+    icon="📊"
+)
+
+county_page = st.Page(
+    page_county_inequality,
+    title="County Inequality Map",
+    icon="🗺️"
+)
+
+mpesa_page = st.Page(
+    page_mpesa_predictor,
+    title="M-PESA Impact Predictor",
+    icon="💳"
+)
+
+youth_page = st.Page(
+    page_youth_unemployment,
+    title="Youth Unemployment",
+    icon="🎓"
+)
+
+# Advanced Tools pages
+forecaster_page = st.Page(
+    page_economic_forecaster,
+    title="Economic Forecaster",
+    icon="🔮"
+)
+
+comparison_page = st.Page(
+    page_county_comparison,
+    title="County Comparison",
+    icon="⚖️"
+)
+
+policy_page = st.Page(
+    page_policy_simulator,
+    title="Policy Simulator",
+    icon="🏛️"
+)
+
+anomaly_page = st.Page(
+    page_anomaly_detection,
+    title="Anomaly Detection",
+    icon="🔍"
+)
+
+nlq_page = st.Page(
+    page_nlq_engine,
+    title="NL Query Engine",
+    icon="💬"
+)
+
+developer_page = st.Page(
+    page_developer,
+    title="Developer / About",
+    icon="👨‍💻"
+)
+
+
+# ── Organize pages into sections ─────────────────────────────────────
+# The dictionary creates collapsible sections in the sidebar
+
+pages = {
+    "📊 Core Analysis": [
+        overview_page,
+        economic_page,
+        county_page,
+        mpesa_page,
+        youth_page,
+    ],
+    "🔮 Advanced Tools": [
+        forecaster_page,
+        comparison_page,
+        policy_page,
+        anomaly_page,
+        nlq_page,
+        developer_page,
+    ],
+}
+
+# ── Initialize navigation ───────────────────────────────────────────
+# st.navigation creates the sidebar automatically
+# It COMPLETELY IGNORES any files in your pages/ folder
+
+pg = st.navigation(pages, position="sidebar")
+pg.run()

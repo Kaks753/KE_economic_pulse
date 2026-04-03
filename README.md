@@ -83,27 +83,3 @@ Visuals: Plotly, Folium
 Data: Pandas, NumPy, wbgapi
 Reports: ReportLab (PDF generation)
 
-
----
-
-## ⚡ Run Locally
-
-```bash
-# Clone
-git clone https://github.com/kaks2679/project.git
-cd project
-
-# Install
-pip install -r requirements.txt
-
-# Run
-streamlit run app.py
-
-👤 Author
-Stephen Muema | Data Scientist & ML Engineer
-
-https://img.shields.io/badge/Portfolio-muemastephenportfolio.netlify.app-0A66C2?style=flat&logo=netlify&logoColor=white
-https://img.shields.io/badge/GitHub-kaks2679-181717?style=flat&logo=github&logoColor=white
-https://img.shields.io/badge/Email-stephenmuema@proton.me-EA4335?style=flat&logo=protonmail&logoColor=white
-
-Nairobi, Kenya 🇰🇪

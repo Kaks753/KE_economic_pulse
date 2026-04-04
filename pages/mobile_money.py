@@ -16,7 +16,7 @@ def render(data: dict):
     st.markdown("""
     <div style='background: linear-gradient(135deg, #1E8449 0%, #117A65 100%);
                 padding: .8rem 1.5rem; border-radius: 12px; margin-bottom: 1rem;'>
-        <h2 style='color:white; margin:0; font-size:1.4rem;'>💚 M-Pesa & Mobile Money Impact Predictor</h2>
+        <h2 style='color:white; margin:0; font-size:1.4rem;'> M-Pesa & Mobile Money Impact Predictor</h2>
         <p style='color:#A9DFBF; margin:.2rem 0 0; font-size:.85rem;'>
             17 years of CBK data · ML regression · Does mobile money reduce poverty?
         </p>

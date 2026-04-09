@@ -198,7 +198,7 @@ def render(data: dict):
     <div style='text-align:center; padding:2rem; color:#566573; margin-top:2rem;
                 border-top:1px solid #2C3E50;'>
         <p style='margin:0; font-size:.85rem;'>
-            Built with by
+            Built by
             <a href='https://muemastephenportfolio.netlify.app/' target='_blank'
                style='color:#3498DB; text-decoration:none;'>Stephen Muema</a>
             · Data Scientist & ML Engineer · Nairobi, Kenya 🇰🇪

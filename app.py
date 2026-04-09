@@ -3,7 +3,7 @@ Kenya Economic Pulse — Main Streamlit Application
 10-page interactive data science dashboard for Kenya economic analysis.
 Author: Stephen Muema | Data Scientist & ML Engineer
 Portfolio: https://muemastephenportfolio.netlify.app/
-GitHub:    https://github.com/kaks2679/project
+GitHub:    https://github.com/Kaks753/KE_economic_pulse
 Version:   2.3.0  |  April 2026
 """
 
@@ -25,7 +25,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        "Get Help":    "https://github.com/kaks2679/project",
+        "Get Help":    "https://github.com/Kaks753/KE_economic_pulse",
         "Report a bug": "mailto:stephenmuema@proton.me",
         "About":       "Kenya Economic Pulse v2.3 — Built by Stephen Muema, Data Scientist",
     }

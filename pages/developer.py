@@ -44,7 +44,7 @@ def render(data: dict):
             <hr style='border-color:#2C3E50; margin:.8rem 0'>
             <a href='https://muemastephenportfolio.netlify.app/' target='_blank'
                style='color:#3498DB; text-decoration:none; font-size:.85rem;'>🌐 Portfolio</a><br><br>
-            <a href='https://github.com/kaks2679' target='_blank'
+            <a href='https://github.com/Kaks753/KE_economic_pulse' target='_blank'
                style='color:#AAB7B8; text-decoration:none; font-size:.85rem;'>🐙 GitHub</a><br><br>
             <a href='mailto:stephenmuema@proton.me'
                style='color:#AAB7B8; text-decoration:none; font-size:.85rem;'>📧 Email</a>
@@ -82,7 +82,7 @@ def render(data: dict):
         ("🏠", "Overview",                     "Kenya at a glance — KPI strip, GDP/poverty charts, county snapshot"),
         ("📊", "Economic Indicators",           "20+ macro indicators with correlation heatmap and OLS scatter"),
         ("🗺️", "County Inequality Map",         "KMeans clustering, Folium bubble map, regional comparisons"),
-        ("💚", "M-Pesa Impact Predictor",       "Ridge/GBM/RF regression proving mobile money reduces poverty"),
+        ("📱", "M-Pesa Impact Predictor",       "Ridge/GBM/RF regression proving mobile money reduces poverty"),
         ("🎓", "Youth Unemployment Forecaster", "GBM forecasting with interactive scenario simulator"),
         ("🔮", "Economic Forecaster",           "Holt-Winters + ARIMA(2,1,2) with confidence intervals"),
         ("⚖️", "County Comparison",             "Side-by-side radar chart + bar chart for any two counties"),
@@ -165,49 +165,11 @@ def render(data: dict):
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Project structure ─────────────────────────────────────────────
-    st.markdown("### 📁 Project Structure")
-    st.code("""
-kenya-economic-pulse/
-├── app.py                          # Main Streamlit application (10 pages)
-├── requirements.txt                # Python dependencies
-├── .streamlit/config.toml          # Streamlit dark theme config
-├── data/                           # CSV data files (6 datasets)
-│   ├── kenya_macro_indicators.csv  # 24×16 World Bank macro data
-│   ├── kenya_county_data.csv       # 47 counties × 12 features
-│   ├── kenya_mobile_money.csv      # M-Pesa 2007–2023 (17×8)
-│   ├── kenya_youth_unemployment.csv# Youth unemp 2005–2023 (19×8)
-│   ├── kenya_sector_employment.csv # Sector shares 2010–2023 (14×10)
-│   └── kenya_regional_stats.csv    # 8 regions × 8 aggregates
-├── pages/                          # 10 Streamlit page modules
-│   ├── economic_indicators.py      # Page 1
-│   ├── county_inequality.py        # Page 2
-│   ├── mobile_money.py             # Page 3
-│   ├── youth_unemployment.py       # Page 4
-│   ├── forecaster.py               # Page 5
-│   ├── county_comparison.py        # Page 6
-│   ├── policy_simulator.py         # Page 7
-│   ├── anomaly_detection.py        # Page 8
-│   ├── nlq_engine.py               # Page 9
-│   └── developer.py                # Page 10
-├── utils/                          # Utility modules
-│   ├── data_fetcher.py             # World Bank API + fallback data
-│   ├── ml_models.py                # All ML model functions
-│   └── report_generator.py        # PDF report generation
-├── src/                            # Source modules
-│   ├── data/loader.py, validator.py
-│   ├── features/engineering.py
-│   ├── models/regression.py, clustering.py, forecasting.py
-│   └── visualization/charts.py
-└── notebooks/
-    ├── kenya_economic_pulse_analysis.ipynb  # Full DS pipeline notebook
-    └── build_notebook.py                    # Notebook builder script
-    """, language="")
 
     # ── Key findings ──────────────────────────────────────────────────
     st.markdown("### 🔑 Key Findings")
     findings = [
-        ("💚", "M-Pesa Effect",    "Mobile money penetration is the #1 predictor of poverty reduction "
+        ("📱", "M-Pesa Effect",    "Mobile money penetration is the #1 predictor of poverty reduction "
                                     "(GBM R²=0.904). Since 2007, financial inclusion rose 26.4%→85.1% "
                                     "as poverty fell 46.8%→33.5%."),
         ("🗺️", "County Gap",       "Extreme regional inequality: Wajir (82.4%) vs Kiambu (13.2%) — "
@@ -236,13 +198,13 @@ kenya-economic-pulse/
     <div style='text-align:center; padding:2rem; color:#566573; margin-top:2rem;
                 border-top:1px solid #2C3E50;'>
         <p style='margin:0; font-size:.85rem;'>
-            Built with ❤️ by
+            Built with by
             <a href='https://muemastephenportfolio.netlify.app/' target='_blank'
                style='color:#3498DB; text-decoration:none;'>Stephen Muema</a>
             · Data Scientist & ML Engineer · Nairobi, Kenya 🇰🇪
         </p>
         <p style='margin:.4rem 0 0; font-size:.8rem;'>
-            <a href='https://github.com/kaks2679/project' target='_blank'
+            <a href='https://github.com/Kaks753/KE_economic_pulse' target='_blank'
                style='color:#566573; text-decoration:none;'>GitHub Repository</a>
             · MIT License · v2.2.0 · April 2026
         </p>

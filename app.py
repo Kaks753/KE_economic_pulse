@@ -239,7 +239,7 @@ def render_overview():
             name="M-Pesa Users (×2 scaled)"
         ))
         fig2.update_layout(
-            **dark_layout(height=340, margin={"l": 10, "r": 10, "t": 30, "b": 20}),
+            **dark_layout(height=340, margin={"l": 10, "r": 10, "t": 30, "b": 20}, use_legend=False),
             legend=dict(bgcolor="#1C2833", font=dict(color="white"), x=0, y=1.1, orientation="h"),
         )
         st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
@@ -259,7 +259,7 @@ def render_overview():
         labels={"Poverty_Rate": "Poverty Rate (%)"},
     )
     fig_snap.update_layout(
-        **dark_layout(height=360, margin={"l": 10, "r": 10, "t": 20, "b": 10}),
+        **dark_layout(height=360, margin={"l": 10, "r": 10, "t": 20, "b": 10}, use_legend=False),
         xaxis=dict(gridcolor="#2C3E50", tickangle=-30),
         legend=dict(bgcolor="#1C2833", font=dict(color="white")),
     )
@@ -283,7 +283,7 @@ def render_overview():
         annotation_font_color="#27AE60"
     )
     fig_yu.update_layout(
-        **dark_layout(height=300, ytitle="Youth Unemployment (%)", margin={"l": 10, "r": 10, "t": 20, "b": 20}),
+        **dark_layout(height=300, ytitle="Youth Unemployment (%)", margin={"l": 10, "r": 10, "t": 20, "b": 20}, use_legend=False),
         legend=dict(bgcolor="#1C2833", font=dict(color="white")),
     )
     st.plotly_chart(fig_yu, use_container_width=True, config=PLOTLY_CONFIG)

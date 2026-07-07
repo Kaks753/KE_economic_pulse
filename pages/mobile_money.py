@@ -11,6 +11,8 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from utils.ml_models import mobile_money_poverty_model
 
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
+
 
 def render(data: dict):
     st.markdown("""
@@ -109,7 +111,7 @@ def render(data: dict):
     )
     fig.update_yaxes(title_text="M-Pesa Users (M)", gridcolor="#2C3E50", secondary_y=False)
     fig.update_yaxes(title_text="Rate (%)", gridcolor="#2C3E50", secondary_y=True)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── ML Model results ─────────────────────────────────────────────
     st.markdown("---")
@@ -166,7 +168,7 @@ def render(data: dict):
                 height=320, margin=dict(l=10, r=60, t=10, b=20),
                 xaxis=dict(gridcolor="#2C3E50", title="Importance (%)"),
             )
-            st.plotly_chart(fig_fi, use_container_width=True)
+            st.plotly_chart(fig_fi, use_container_width=True, config=PLOTLY_CONFIG)
 
         # Actual vs Predicted
         st.markdown("#### 🎯 Actual vs Predicted Poverty Rate")
@@ -190,7 +192,7 @@ def render(data: dict):
             xaxis=dict(gridcolor="#2C3E50", title="Year"),
             yaxis=dict(gridcolor="#2C3E50", title="Poverty Rate (%)"),
         )
-        st.plotly_chart(fig_avp, use_container_width=True)
+        st.plotly_chart(fig_avp, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Transaction volumes ──────────────────────────────────────────
     st.markdown("### 💸 Mobile Money Transaction Volumes (KES Billions)")
@@ -216,7 +218,7 @@ def render(data: dict):
         yaxis=dict(gridcolor="#2C3E50", title="KES Billions"),
         hovermode="x unified"
     )
-    st.plotly_chart(fig_vol, use_container_width=True)
+    st.plotly_chart(fig_vol, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Key insight ──────────────────────────────────────────────────
     st.markdown("""

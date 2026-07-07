@@ -10,6 +10,8 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
+
 
 # ── Metric definitions ────────────────────────────────────────────────
 METRICS = {
@@ -172,7 +174,7 @@ def render(data: dict):
             height=380,
             margin=dict(l=20, r=20, t=20, b=60)
         )
-        st.plotly_chart(fig_radar, use_container_width=True)
+        st.plotly_chart(fig_radar, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Metric heatmap ────────────────────────────────────────────────
     with col_heat:
@@ -217,7 +219,7 @@ def render(data: dict):
             yaxis=dict(tickfont=dict(size=10)),
             margin=dict(l=10, r=10, t=10, b=60)
         )
-        st.plotly_chart(fig_hm, use_container_width=True)
+        st.plotly_chart(fig_hm, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ════════════════════════════════════════════════════════════════
     # SECTION 3 — GROUPED BAR CHART
@@ -248,7 +250,7 @@ def render(data: dict):
         yaxis=dict(gridcolor="#2C3E50", title="Value"),
         margin=dict(l=10, r=10, t=50, b=30)
     )
-    st.plotly_chart(fig_bar, use_container_width=True)
+    st.plotly_chart(fig_bar, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ════════════════════════════════════════════════════════════════
     # SECTION 4 — SCORE SUMMARY TABLE

@@ -174,8 +174,8 @@ def render(data: dict):
                                     "as poverty fell 46.8%→33.5%."),
         ("🗺️", "County Gap",       "Extreme regional inequality: Wajir (82.4%) vs Kiambu (13.2%) — "
                                     "a 69pp poverty gap. North-Eastern counties are in critical need."),
-        ("🎓", "Youth Crisis",     "Youth unemployment at 61.5% — 4.5× the global average. "
-                                    "Education spending and FDI are the strongest policy levers."),
+        ("🎓", "Youth Crisis",     "Youth unemployment remains a key challenge — well above the global average. "
+                                     "Education spending and FDI are the strongest policy levers."),
         ("📈", "Growth Resilient", "Kenya grew ~5.2% average 2000–2023 despite COVID, elections, drought. "
                                     "Services & ICT now drive 35%+ of GDP."),
         ("⚡", "Power Divide",     "Electricity access ranges from 10.8% (Turkana) to 92.4% (Nairobi). "

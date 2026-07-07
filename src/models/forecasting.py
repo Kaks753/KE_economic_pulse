@@ -34,14 +34,36 @@ class HoltWintersForecaster:
 
 
 class ARIMAForecaster:
-    """ARIMA(2,1,2) forecaster with confidence intervals."""
+    """ARIMA forecaster with auto order selection and confidence intervals."""
 
-    def __init__(self, order=(2, 1, 2)):
+    def __init__(self, order: tuple = None):
         self.order = order
         self._fit  = None
+        self._selected_order = None
+
+    def _select_order(self, series: np.ndarray, max_p: int = 3, max_d: int = 2, max_q: int = 3) -> tuple:
+        """Select best ARIMA order by minimizing AIC."""
+        best_aic = np.inf
+        best_order = (1, 1, 1)
+        for p in range(max_p + 1):
+            for d in range(max_d + 1):
+                for q in range(max_q + 1):
+                    if p == 0 and q == 0:
+                        continue
+                    try:
+                        model = ARIMA(series, order=(p, d, q))
+                        result = model.fit()
+                        if result.aic < best_aic:
+                            best_aic = result.aic
+                            best_order = (p, d, q)
+                    except Exception:
+                        continue
+        return best_order
 
     def fit(self, series: np.ndarray):
-        model    = ARIMA(series, order=self.order)
+        order = self.order or self._select_order(series)
+        self._selected_order = order
+        model = ARIMA(series, order=order)
         self._fit = model.fit()
         return self
 
@@ -52,7 +74,49 @@ class ARIMAForecaster:
         fc_obj = self._fit.get_forecast(steps=steps)
         mean   = fc_obj.predicted_mean
         ci     = fc_obj.conf_int(alpha=alpha)
-        return mean, ci.iloc[:, 0].values, ci.iloc[:, 1].values
+        if hasattr(ci, "iloc"):
+            lo = ci.iloc[:, 0].values
+            hi = ci.iloc[:, 1].values
+        else:
+            lo = ci[:, 0]
+            hi = ci[:, 1]
+        return mean, lo, hi
+
+    def summary(self) -> dict:
+        """Return model diagnostics."""
+        if self._fit is None:
+            return {}
+        return {
+            "order": self._selected_order or self.order,
+            "aic": round(self._fit.aic, 2),
+            "bic": round(self._fit.bic, 2),
+        }
+
+
+def evaluate_forecast(series: pd.Series, test_size: int = 4) -> dict:
+    """Evaluate forecast model on held-out test set. Returns RMSE and MAPE."""
+    from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+    if len(series) < test_size + 4:
+        return {"rmse": None, "mae": None, "mape": None}
+
+    train = series.iloc[:-test_size]
+    test = series.iloc[-test_size:]
+
+    forecaster = HoltWintersForecaster()
+    forecaster.fit(train.values)
+    preds = forecaster.forecast(test_size)
+
+    rmse = np.sqrt(mean_squared_error(test.values, preds))
+    mae = mean_absolute_error(test.values, preds)
+    mape = np.mean(np.abs((test.values - preds) / (test.values + 1e-10))) * 100
+
+    return {
+        "rmse": round(rmse, 3),
+        "mae": round(mae, 3),
+        "mape": round(mape, 2),
+        "test_size": test_size,
+    }
 
 
 def adf_test(series: pd.Series) -> dict:

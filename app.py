@@ -18,10 +18,12 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(__file__))
 
+from utils.chart_config import PLOTLY_CONFIG, responsive_columns, kpi_card, dark_layout
+
 # ── Page config (MUST be first Streamlit call) ──────────────────────
 st.set_page_config(
     page_title="Kenya Economic Pulse | Stephen Muema",
-    page_icon="🇰🇪",
+    page_icon="\U0001f1f0\U0001f1ea",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
@@ -31,56 +33,90 @@ st.set_page_config(
     }
 )
 
+# ── Theme toggle ─────────────────────────────────────────────────────
+if "theme" not in st.session_state:
+    st.session_state["theme"] = "dark"
+
+theme = st.session_state["theme"]
+is_dark = theme == "dark"
+
+BG_COLOR = "#0E1117" if is_dark else "#F5F5F5"
+CARD_BG = "#1C2833" if is_dark else "#FFFFFF"
+TEXT_COLOR = "#ECF0F1" if is_dark else "#1C2833"
+MUTED_TEXT = "#AAB7B8" if is_dark else "#566573"
+GRID_COLOR = "#2C3E50" if is_dark else "#D5D8DC"
+SIDEBAR_BG = "linear-gradient(180deg, #0D1B2A 0%, #1B2838 100%)" if is_dark else "linear-gradient(180deg, #EBF5FB 0%, #D6EAF8 100%)"
+BORDER_COLOR = "#2C3E50" if is_dark else "#D5D8DC"
+
 # ── Global CSS styles ────────────────────────────────────────────────
-st.markdown("""
+st.markdown(f"""
 <style>
-    .stApp { background-color: #0E1117; }
+    :root {{
+        --bg: {BG_COLOR};
+        --card: {CARD_BG};
+        --text: {TEXT_COLOR};
+        --muted: {MUTED_TEXT};
+        --grid: {GRID_COLOR};
+        --sidebar-bg: {SIDEBAR_BG};
+        --border: {BORDER_COLOR};
+    }}
+    .stApp {{ background-color: var(--bg); }}
 
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0D1B2A 0%, #1B2838 100%);
-        border-right: 1px solid #2C3E50;
-    }
-    [data-testid="stSidebar"] * { color: #ECF0F1 !important; }
+    [data-testid="stSidebar"] {{
+        background: var(--sidebar-bg);
+        border-right: 1px solid var(--border);
+    }}
+    [data-testid="stSidebar"] * {{ color: {"#ECF0F1" if is_dark else "#1C2833"} !important; }}
 
-    [data-testid="stMetric"] {
-        background: #1C2833;
+    [data-testid="stMetric"] {{
+        background: var(--card);
         border-radius: 10px;
         padding: 12px 16px;
-        border: 1px solid #2C3E50;
-    }
-    [data-testid="stMetricLabel"] { color: #AAB7B8 !important; font-size: .85rem; }
-    [data-testid="stMetricValue"] { color: #ECF0F1 !important; }
+        border: 1px solid var(--border);
+    }}
+    [data-testid="stMetricLabel"] {{ color: var(--muted) !important; font-size: .85rem; }}
+    [data-testid="stMetricValue"] {{ color: var(--text) !important; }}
 
-    .streamlit-expanderHeader { color: #AED6F1 !important; }
+    .streamlit-expanderHeader {{ color: #AED6F1 !important; }}
 
-    .stTabs [data-baseweb="tab-list"]  { background: #1C2833; border-radius: 10px; padding: 4px; }
-    .stTabs [data-baseweb="tab"]       { color: #AAB7B8 !important; border-radius: 8px; padding: 8px 16px; }
-    .stTabs [aria-selected="true"]     { background: #2980B9 !important; color: white !important; }
+    .stTabs [data-baseweb="tab-list"]  {{ background: var(--card); border-radius: 10px; padding: 4px; }}
+    .stTabs [data-baseweb="tab"]       {{ color: var(--muted) !important; border-radius: 8px; padding: 8px 16px; }}
+    .stTabs [aria-selected="true"]     {{ background: #2980B9 !important; color: white !important; }}
 
-    .stDownloadButton button {
+    .stDownloadButton button {{
         background: #2980B9 !important;
         color: white !important;
         border-radius: 8px !important;
         border: none !important;
-    }
+    }}
 
-    ::-webkit-scrollbar        { width: 6px; }
-    ::-webkit-scrollbar-track  { background: #0E1117; }
-    ::-webkit-scrollbar-thumb  { background: #2C3E50; border-radius: 3px; }
+    ::-webkit-scrollbar        {{ width: 6px; }}
+    ::-webkit-scrollbar-track  {{ background: var(--bg); }}
+    ::-webkit-scrollbar-thumb  {{ background: #2C3E50; border-radius: 3px; }}
 
-    /* Sidebar navigation styling */
-    [data-testid="stSidebarNav"] {
-        background: transparent;
-    }
-    [data-testid="stSidebarNav"]::before {
+    [data-testid="stSidebarNav"] {{ background: transparent; }}
+    [data-testid="stSidebarNav"]::before {{
         content: "Kenya Economic Pulse";
         display: block;
         font-size: 1.5rem;
         text-align: center;
         padding: 1rem 0 0.5rem 0;
-    }
+    }}
+
+    @media (max-width: 768px) {{
+        [data-testid="column"] {{ min-width: 100% !important; }}
+    }}
 </style>
 """, unsafe_allow_html=True)
+
+# ── Sidebar theme toggle ────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### \U0001f3a8 Appearance")
+    light_mode = st.toggle("Light Mode", value=not is_dark, key="theme_toggle")
+    new_theme = "light" if light_mode else "dark"
+    if new_theme != st.session_state["theme"]:
+        st.session_state["theme"] = new_theme
+        st.rerun()
 
 # ── Page imports (after set_page_config) ────────────────────────────
 from utils.data_fetcher import get_all_data
@@ -136,15 +172,14 @@ def render_overview():
     </div>
     """, unsafe_allow_html=True)
 
-    # KPI strip
+    # KPI strip — responsive (wraps to 3 cols on mobile)
     st.markdown("### 🌍 Kenya at a Glance")
-    c1, c2, c3, c4, c5, c6 = st.columns(6)
     last_mm = mm.iloc[-1]
     last_yu = yu.iloc[-1]
     gdp_val = macro["GDP Growth (%)"].dropna().iloc[-1] if "GDP Growth (%)" in macro.columns else 4.8
     inf_val = macro["Inflation Rate (%)"].dropna().iloc[-1] if "Inflation Rate (%)" in macro.columns else 7.8
 
-    kpis = [
+    kpi_data = [
         ("🇰🇪 Population",   "56.4M",                                   "#3498DB"),
         ("📈 GDP Growth",     f"{gdp_val:.1f}%",                         "#27AE60"),
         ("💸 Inflation",      f"{inf_val:.1f}%",                         "#E74C3C"),
@@ -152,14 +187,9 @@ def render_overview():
         ("🎓 Youth Unemp.",   f"{last_yu['Youth_Unemployment_Pct']:.1f}%","#F39C12"),
         ("🏚️ Poverty Rate",  f"{last_mm['Poverty_Rate_National']:.1f}%", "#E67E22"),
     ]
-    for col, (lbl, val, color) in zip([c1, c2, c3, c4, c5, c6], kpis):
-        col.markdown(f"""
-        <div style='background:#1C2833; padding:1rem; border-radius:10px;
-                    border-top:3px solid {color}; text-align:center; min-height:90px;'>
-            <div style='color:#AAB7B8; font-size:.75rem; margin-bottom:.3rem'>{lbl}</div>
-            <div style='color:{color}; font-size:1.4rem; font-weight:bold'>{val}</div>
-        </div>
-        """, unsafe_allow_html=True)
+    kpi_cols = responsive_columns(len(kpi_data))
+    for i, (lbl, val, color) in enumerate(kpi_data):
+        kpi_card(kpi_cols[i], lbl, val, color)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -184,16 +214,14 @@ def render_overview():
             line=dict(color="#E74C3C", width=2.5), marker=dict(size=6)
         ), secondary_y=True)
         fig.update_layout(
-            plot_bgcolor="#0E1117", paper_bgcolor="#0E1117",
-            font=dict(color="white"), height=340,
+            **dark_layout(height=340, margin={"l": 10, "r": 10, "t": 30, "b": 20})
+        )
+        fig.update_layout(
             legend=dict(bgcolor="#1C2833", font=dict(color="white"), x=0, y=1.1, orientation="h"),
-            hovermode="x unified",
-            xaxis=dict(gridcolor="#2C3E50"),
-            margin=dict(l=10, r=10, t=30, b=20)
         )
         fig.update_yaxes(gridcolor="#2C3E50", secondary_y=False, title_text="GDP Growth (%)")
         fig.update_yaxes(gridcolor="#2C3E50", secondary_y=True, title_text="Poverty (%)")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with col_right:
         st.markdown("#### 📱 Mobile Financial Inclusion Rise")
@@ -211,15 +239,10 @@ def render_overview():
             name="M-Pesa Users (×2 scaled)"
         ))
         fig2.update_layout(
-            plot_bgcolor="#0E1117", paper_bgcolor="#0E1117",
-            font=dict(color="white"), height=340,
+            **dark_layout(height=340, margin={"l": 10, "r": 10, "t": 30, "b": 20}),
             legend=dict(bgcolor="#1C2833", font=dict(color="white"), x=0, y=1.1, orientation="h"),
-            hovermode="x unified",
-            xaxis=dict(gridcolor="#2C3E50"),
-            yaxis=dict(gridcolor="#2C3E50"),
-            margin=dict(l=10, r=10, t=30, b=20)
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
 
     # County snapshot
     st.markdown("#### 🗺️ County Poverty Snapshot — Top 10 vs Bottom 10")
@@ -236,14 +259,11 @@ def render_overview():
         labels={"Poverty_Rate": "Poverty Rate (%)"},
     )
     fig_snap.update_layout(
-        plot_bgcolor="#0E1117", paper_bgcolor="#0E1117",
-        font=dict(color="white"), height=360,
-        legend=dict(bgcolor="#1C2833", font=dict(color="white")),
+        **dark_layout(height=360, margin={"l": 10, "r": 10, "t": 20, "b": 10}),
         xaxis=dict(gridcolor="#2C3E50", tickangle=-30),
-        yaxis=dict(gridcolor="#2C3E50"),
-        margin=dict(l=10, r=10, t=20, b=10)
+        legend=dict(bgcolor="#1C2833", font=dict(color="white")),
     )
-    st.plotly_chart(fig_snap, use_container_width=True)
+    st.plotly_chart(fig_snap, use_container_width=True, config=PLOTLY_CONFIG)
 
     # Youth unemployment trend
     st.markdown("#### 🎓 Youth Unemployment Trend (2005–2023)")
@@ -263,15 +283,10 @@ def render_overview():
         annotation_font_color="#27AE60"
     )
     fig_yu.update_layout(
-        plot_bgcolor="#0E1117", paper_bgcolor="#0E1117",
-        font=dict(color="white"), height=300,
+        **dark_layout(height=300, ytitle="Youth Unemployment (%)", margin={"l": 10, "r": 10, "t": 20, "b": 20}),
         legend=dict(bgcolor="#1C2833", font=dict(color="white")),
-        hovermode="x unified",
-        xaxis=dict(gridcolor="#2C3E50"),
-        yaxis=dict(gridcolor="#2C3E50", title="Youth Unemployment (%)"),
-        margin=dict(l=10, r=10, t=20, b=20)
     )
-    st.plotly_chart(fig_yu, use_container_width=True)
+    st.plotly_chart(fig_yu, use_container_width=True, config=PLOTLY_CONFIG)
 
     # Report download
     st.markdown("---")
@@ -351,7 +366,7 @@ def render_overview():
             <div style='background:#0E1117; padding:.7rem 1rem; border-radius:8px; border-left:3px solid #E74C3C;'>
                 <b style='color:#E74C3C; font-size:.85rem;'>📰 Journalists & Civil Society</b>
                 <p style='color:#AAB7B8; font-size:.8rem; margin:.3rem 0 0; line-height:1.6;'>
-                    <b>Youth Unemployment</b> page shows the 61.5% crisis with scenario modelling.
+                    <b>Youth Unemployment</b> page shows the crisis modelling.
                     <b>County Inequality Map</b> exposes the NE Kenya development gap.
                     Download the <b>Executive Summary PDF</b> above for briefing documents.
                 </p>

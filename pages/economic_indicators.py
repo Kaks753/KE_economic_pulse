@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from utils.ml_models import forecast_indicator, arima_forecast
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
 
 
 COLORS = {
@@ -188,7 +189,7 @@ def render(data: dict):
             height=480,
             margin=dict(l=40, r=20, t=60, b=40)
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Correlation heatmap ──────────────────────────────────────────
     st.markdown("### 🔗 Indicator Correlation Matrix")
@@ -211,7 +212,7 @@ def render(data: dict):
             title_font=dict(color="white", size=16),
             coloraxis_colorbar=dict(title="r", tickfont=dict(color="white"), title_font=dict(color="white"))
         )
-        st.plotly_chart(fig_corr, use_container_width=True)
+        st.plotly_chart(fig_corr, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── GDP vs Poverty scatter ───────────────────────────────────────
     if "GDP per Capita (constant USD)" in macro_df.columns and "Poverty Headcount Ratio (%)" in macro_df.columns:
@@ -236,7 +237,7 @@ def render(data: dict):
             xaxis=dict(gridcolor="#2C3E50"),
             yaxis=dict(gridcolor="#2C3E50"),
         )
-        st.plotly_chart(fig_s, use_container_width=True)
+        st.plotly_chart(fig_s, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Data table ───────────────────────────────────────────────────
     with st.expander("📋 View Raw Data Table"):

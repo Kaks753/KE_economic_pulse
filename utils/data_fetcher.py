@@ -63,19 +63,20 @@ def build_county_data() -> pd.DataFrame:
     """
     Build Kenya county-level dataset using KNBS published statistics
     (poverty rates, population, unemployment from 2019 Kenya Census & KIHBS 2021).
+    47 counties per the 2010 Constitution.
     """
     counties = {
         "County": [
-            "Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret (Uasin Gishu)",
+            "Nairobi", "Mombasa", "Kisumu", "Nakuru", "Uasin Gishu",
             "Kiambu", "Machakos", "Meru", "Nyeri", "Kisii",
             "Kakamega", "Bungoma", "Kilifi", "Kwale", "Tana River",
             "Garissa", "Wajir", "Mandera", "Turkana", "Marsabit",
             "Isiolo", "Samburu", "West Pokot", "Trans Nzoia", "Baringo",
             "Laikipia", "Nyandarua", "Kirinyaga", "Murang'a", "Embu",
-            "Kitui", "Makueni", "Tharaka-Nithi", "Mwingi (Kitui)", "Taita Taveta",
+            "Kitui", "Makueni", "Tharaka-Nithi", "Taita Taveta",
             "Lamu", "Kajiado", "Narok", "Bomet", "Kericho",
             "Nandi", "Elgeyo Marakwet", "Vihiga", "Siaya", "Homa Bay",
-            "Migori", "Nyamira", "Mombasa Coast (Kwale)", "Busia", "Lugari (Kakamega)"
+            "Migori", "Nyamira", "Busia"
         ],
         "Poverty_Rate": [
             17.0, 24.3, 35.6, 20.2, 18.4,
@@ -84,10 +85,10 @@ def build_county_data() -> pd.DataFrame:
             68.2, 82.4, 76.3, 79.4, 70.8,
             52.3, 75.4, 68.7, 35.2, 45.6,
             32.8, 30.5, 15.8, 21.4, 18.9,
-            52.4, 48.7, 41.2, 55.6, 45.8,
+            52.4, 48.7, 41.2, 45.8,
             48.3, 19.5, 46.3, 38.4, 22.7,
             33.5, 34.2, 39.4, 42.5, 47.3,
-            43.5, 34.7, 63.1, 46.5, 41.5
+            43.5, 34.7, 46.5
         ],
         "Population_2019": [
             4397073, 1208333, 968872, 2162202, 1163186,
@@ -96,10 +97,10 @@ def build_county_data() -> pd.DataFrame:
             841353, 781263, 1025756, 926976, 459785,
             268002, 310327, 621241, 990341, 666763,
             518560, 638289, 610411, 1055791, 610091,
-            1136187, 987653, 393177, 1136187, 340671,
+            1136187, 987653, 393177, 340671,
             143920, 1107296, 1157873, 857722, 901777,
             885711, 480271, 590013, 993183, 1131950,
-            1116436, 605576, 866820, 893681, 1867579
+            1116436, 605576, 893681
         ],
         "Unemployment_Rate": [
             26.5, 28.3, 31.2, 22.4, 20.8,
@@ -108,10 +109,10 @@ def build_county_data() -> pd.DataFrame:
             52.3, 58.4, 62.1, 65.3, 54.8,
             40.2, 56.4, 52.7, 28.6, 37.4,
             29.8, 25.3, 17.5, 19.8, 18.2,
-            38.4, 35.6, 32.1, 38.4, 36.5,
+            38.4, 35.6, 32.1, 36.5,
             38.2, 22.5, 38.3, 31.4, 20.6,
             27.4, 28.5, 32.1, 34.5, 38.2,
-            36.7, 29.8, 42.1, 38.5, 33.5
+            36.7, 29.8, 38.5
         ],
         "Mobile_Penetration": [
             98.2, 92.4, 85.3, 88.7, 90.1,
@@ -120,10 +121,10 @@ def build_county_data() -> pd.DataFrame:
             45.6, 32.1, 28.7, 25.4, 38.5,
             55.3, 42.7, 38.9, 75.6, 60.4,
             72.8, 80.3, 89.4, 87.2, 86.5,
-            54.3, 60.8, 65.4, 54.3, 62.4,
+            54.3, 60.8, 65.4, 62.4,
             58.4, 84.5, 58.7, 62.4, 82.3,
             72.6, 68.4, 70.2, 65.3, 58.4,
-            60.7, 64.8, 52.3, 58.6, 68.4
+            60.7, 64.8, 58.6
         ],
         "Electricity_Access": [
             92.4, 78.3, 68.5, 72.4, 74.5,
@@ -132,10 +133,10 @@ def build_county_data() -> pd.DataFrame:
             22.5, 18.3, 12.4, 10.8, 22.4,
             38.4, 24.6, 18.5, 60.4, 42.5,
             65.4, 72.3, 80.4, 78.5, 75.6,
-            35.4, 42.3, 48.6, 35.4, 52.4,
+            35.4, 42.3, 48.6, 52.4,
             45.6, 72.4, 40.3, 45.6, 68.4,
             55.3, 52.4, 55.6, 48.3, 42.6,
-            45.4, 50.3, 28.6, 42.5, 45.6
+            45.4, 50.3, 42.5
         ],
         "HDI_Score": [
             0.612, 0.548, 0.504, 0.541, 0.558,
@@ -144,10 +145,10 @@ def build_county_data() -> pd.DataFrame:
             0.312, 0.246, 0.218, 0.208, 0.298,
             0.382, 0.278, 0.312, 0.486, 0.398,
             0.478, 0.508, 0.574, 0.552, 0.545,
-            0.354, 0.396, 0.428, 0.354, 0.402,
+            0.354, 0.396, 0.428, 0.402,
             0.365, 0.528, 0.384, 0.412, 0.524,
             0.462, 0.448, 0.448, 0.394, 0.352,
-            0.378, 0.432, 0.328, 0.376, 0.422
+            0.378, 0.432, 0.376
         ],
         "Latitude": [
             -1.2921, -4.0435, -0.1022, -0.3031, 0.5143,
@@ -156,10 +157,10 @@ def build_county_data() -> pd.DataFrame:
             -0.4532, 1.7471, 3.9373, 3.1220, 2.3284,
             0.3556, 1.2156, 1.7474, 1.0566, 0.4920,
             0.3606, -0.1800, -0.6593, -0.7177, -0.5390,
-            -1.3667, -1.8033, -0.3000, -1.3667, -3.3167,
+            -1.3667, -1.8033, -0.3000, -3.3167,
             -2.2686, -1.8524, -1.0970, -0.7901, -0.3670,
             0.1827, 0.7742, 0.0822, 0.0612, -0.5265,
-            -1.0634, -0.5667, -4.1745, 0.4608, 0.2827
+            -1.0634, -0.5667, 0.4608
         ],
         "Longitude": [
             36.8219, 39.6682, 34.7617, 36.0800, 35.2698,
@@ -168,10 +169,10 @@ def build_county_data() -> pd.DataFrame:
             39.6467, 40.0624, 41.8569, 35.5984, 37.9947,
             37.5833, 36.9333, 35.1164, 35.0008, 35.9736,
             36.7820, 36.5333, 37.2834, 37.0333, 37.4500,
-            38.0107, 37.6226, 37.6500, 38.0107, 38.3667,
+            38.0107, 37.6226, 37.6500, 38.3667,
             40.9020, 36.7820, 35.8700, 35.3414, 35.2763,
             35.1027, 35.5095, 34.7213, 34.2422, 34.4571,
-            34.4734, 34.9333, 39.4524, 34.1115, 34.7522
+            34.4734, 34.9333, 34.1115
         ],
         "Region": [
             "Nairobi", "Coast", "Nyanza", "Rift Valley", "Rift Valley",
@@ -180,10 +181,10 @@ def build_county_data() -> pd.DataFrame:
             "North Eastern", "North Eastern", "North Eastern", "Rift Valley", "Eastern",
             "Eastern", "Rift Valley", "Rift Valley", "Rift Valley", "Rift Valley",
             "Rift Valley", "Central", "Central", "Central", "Eastern",
-            "Eastern", "Eastern", "Eastern", "Eastern", "Coast",
+            "Eastern", "Eastern", "Eastern", "Coast",
             "Coast", "Rift Valley", "Rift Valley", "Rift Valley", "Rift Valley",
             "Rift Valley", "Rift Valley", "Western", "Nyanza", "Nyanza",
-            "Nyanza", "Nyanza", "Coast", "Western", "Western"
+            "Nyanza", "Nyanza", "Western"
         ]
     }
     return pd.DataFrame(counties)
@@ -250,10 +251,10 @@ def build_youth_unemployment_data() -> pd.DataFrame:
     data = {
         "Year": list(range(2005, 2024)),
         "Youth_Unemployment_Pct": [
-            67.3, 68.1, 65.2, 64.8, 67.4,
-            68.2, 66.5, 65.1, 63.8, 62.4,
-            61.8, 63.2, 61.5, 60.2, 67.5,
-            64.3, 63.2, 62.8, 61.5
+            12.5, 13.1, 13.8, 14.2, 14.9,
+            15.4, 15.8, 16.3, 16.8, 17.2,
+            17.5, 17.1, 16.6, 16.1, 15.5,
+            15.1, 12.2, 15.5, 15.2
         ],
         "GDP_Growth": [
             5.9, 6.5, 7.0, 0.2, 3.3,

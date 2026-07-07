@@ -11,6 +11,8 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from utils.ml_models import youth_unemployment_model, simulate_scenario
 
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
+
 
 def render(data: dict):
     st.markdown("""
@@ -36,14 +38,14 @@ def render(data: dict):
         - **Scenario simulator** — adjust GDP growth, FDI, university enrollment to see the modelled impact
 
         **For stakeholders:**
-        - 🏛️ *Policy makers*: Youth unemployment at 61.5% is a **national emergency**. Each 1% GDP growth
-          reduces youth unemployment by ~0.8 pp. TVET investment yields the fastest returns.
+        - 🏛️ *Policy makers*: Youth unemployment requires targeted intervention. Each 1% GDP growth
+          reduces youth unemployment. TVET investment yields the fastest returns.
         - 📈 *Investors*: A young, growing workforce is Kenya's competitive advantage. ICT and green
           energy sectors offer the highest youth employment multipliers.
         - 🎓 *Researchers*: Use the scenario simulator to test the macro-economic levers identified in
           the ILO Kenya Employment Report (2022).
-        - 💡 *Key insight*: Without intervention, youth unemployment is forecast to remain above 58%
-          by 2028. Targeted FDI + skills training could reduce it below 50% by 2030.
+        - 💡 *Key insight*: Youth unemployment has trended downward but remains above the global average.
+          Targeted FDI + skills training could accelerate the decline.
         """)
 
     yu_df = data["youth_unemp"].copy()
@@ -131,7 +133,7 @@ def render(data: dict):
         xaxis=dict(gridcolor="#2C3E50", title="Year"),
         yaxis=dict(gridcolor="#2C3E50", title="Youth Unemployment (%)"),
     )
-    st.plotly_chart(fig_hist, use_container_width=True)
+    st.plotly_chart(fig_hist, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Feature importance ───────────────────────────────────────────
     col_a, col_b = st.columns([1, 1])
@@ -155,7 +157,7 @@ def render(data: dict):
             height=300, margin=dict(l=10, r=70, t=10, b=20),
             xaxis=dict(gridcolor="#2C3E50"),
         )
-        st.plotly_chart(fig_fi, use_container_width=True)
+        st.plotly_chart(fig_fi, use_container_width=True, config=PLOTLY_CONFIG)
 
     with col_b:
         st.markdown("### 📉 Unemployment vs GDP Growth Correlation")
@@ -177,7 +179,7 @@ def render(data: dict):
             coloraxis_colorbar=dict(title="Year", tickfont=dict(color="white"),
                                     title_font=dict(color="white"))
         )
-        st.plotly_chart(fig_gdp, use_container_width=True)
+        st.plotly_chart(fig_gdp, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── 🔮 SCENARIO SIMULATOR ────────────────────────────────────────
     st.markdown("---")
@@ -257,7 +259,7 @@ def render(data: dict):
         font=dict(color="white"), height=320,
         margin=dict(l=30, r=30, t=40, b=20)
     )
-    st.plotly_chart(fig_gauge, use_container_width=True)
+    st.plotly_chart(fig_gauge, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Sector employment chart ──────────────────────────────────────
     st.markdown("### 🏭 Kenya Employment by Sector (2010–2023)")
@@ -285,7 +287,7 @@ def render(data: dict):
         xaxis=dict(gridcolor="#2C3E50", title="Year"),
         yaxis=dict(gridcolor="#2C3E50", title="Employment Share (%)", range=[0, 100]),
     )
-    st.plotly_chart(fig_sec, use_container_width=True)
+    st.plotly_chart(fig_sec, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Internet vs Unemployment ─────────────────────────────────────
     st.markdown("### 🌐 Internet Access vs Youth Unemployment")
@@ -309,7 +311,7 @@ def render(data: dict):
     )
     fig_int.update_yaxes(title_text="Internet Users (%)", gridcolor="#2C3E50", secondary_y=False)
     fig_int.update_yaxes(title_text="Youth Unemployment (%)", gridcolor="#2C3E50", secondary_y=True)
-    st.plotly_chart(fig_int, use_container_width=True)
+    st.plotly_chart(fig_int, use_container_width=True, config=PLOTLY_CONFIG)
 
     with st.expander("📋 Youth Unemployment Raw Data"):
         st.dataframe(yu_df.set_index("Year").style.format("{:.2f}"), use_container_width=True)

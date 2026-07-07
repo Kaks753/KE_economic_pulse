@@ -10,6 +10,8 @@ import numpy as np
 import plotly.graph_objects as go
 import re
 import warnings
+
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
 warnings.filterwarnings("ignore")
 
 
@@ -145,7 +147,7 @@ def _answer(topic: str, data: dict) -> dict:
             last = macro[col].dropna().iloc[-1]
             text = (f"Kenya's unemployment rate is **{last:.1f}%**. "
                     f"However, this underestimates underemployment and informal sector challenges. "
-                    f"Youth unemployment (15–24) is much higher at ~61.5%.")
+                    f"Youth unemployment (15–24) is a critical challenge at ~{yu['Youth_Unemployment_Pct'].iloc[-1]:.1f}%.")
             fig = go.Figure(go.Scatter(x=macro["Year"], y=macro[col].fillna(0),
                                        fill="tozeroy", fillcolor="rgba(243,156,18,0.15)",
                                        line=dict(color="#F39C12", width=2.5), name=col))
@@ -156,7 +158,7 @@ def _answer(topic: str, data: dict) -> dict:
         last = yu["Youth_Unemployment_Pct"].iloc[-1]
         yr   = int(yu["Year"].iloc[-1])
         text = (f"Kenya's **youth unemployment rate** (ages 15–24) was **{last:.1f}%** in **{yr}**. "
-                f"This is nearly 5× the global average of ~13.6%. "
+                f"This is above the global average of ~13.6% and reflects structural challenges in the labour market. "
                 f"Key drivers: skills mismatch, population growth, limited formal-sector jobs.")
         fig = go.Figure(go.Scatter(
             x=yu["Year"], y=yu["Youth_Unemployment_Pct"],
@@ -429,7 +431,7 @@ def render(data: dict):
     """, unsafe_allow_html=True)
 
     if "fig" in result and result["fig"] is not None:
-        st.plotly_chart(result["fig"], use_container_width=True)
+        st.plotly_chart(result["fig"], use_container_width=True, config=PLOTLY_CONFIG)
 
     if "df" in result and result["df"] is not None:
         with st.expander("📋 View Data Table"):

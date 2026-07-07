@@ -13,6 +13,8 @@ import folium
 from streamlit_folium import st_folium
 from utils.ml_models import cluster_counties, compute_regional_stats
 
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
+
 
 CLUSTER_COLORS = {
     "🌿 Emerging (Low Poverty)":  "#27AE60",
@@ -205,7 +207,7 @@ def render(data: dict):
             xaxis=dict(gridcolor="#2C3E50"),
             yaxis=dict(autorange="reversed")
         )
-        st.plotly_chart(fig_top, use_container_width=True)
+        st.plotly_chart(fig_top, use_container_width=True, config=PLOTLY_CONFIG)
 
     with col_b:
         st.markdown(f"#### 🔻 Top 10 — Lowest {cfg['label']}")
@@ -225,7 +227,7 @@ def render(data: dict):
             xaxis=dict(gridcolor="#2C3E50"),
             yaxis=dict(autorange="reversed")
         )
-        st.plotly_chart(fig_bot, use_container_width=True)
+        st.plotly_chart(fig_bot, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Regional summary ─────────────────────────────────────────────
     st.markdown("### 🌍 Regional Summary")
@@ -246,7 +248,7 @@ def render(data: dict):
         xaxis=dict(gridcolor="#2C3E50"),
         yaxis=dict(gridcolor="#2C3E50"),
     )
-    st.plotly_chart(fig_reg, use_container_width=True)
+    st.plotly_chart(fig_reg, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Scatter: Poverty vs Mobile penetration ───────────────────────
     st.markdown("### 📱 Does Mobile Penetration Reduce Poverty?")
@@ -270,7 +272,7 @@ def render(data: dict):
         xaxis=dict(gridcolor="#2C3E50"),
         yaxis=dict(gridcolor="#2C3E50"),
     )
-    st.plotly_chart(fig_sc, use_container_width=True)
+    st.plotly_chart(fig_sc, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Data table ───────────────────────────────────────────────────
     with st.expander("📋 Full County Data Table"):

@@ -12,6 +12,8 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from utils.ml_models import forecast_indicator, arima_forecast
 import warnings
+
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
 warnings.filterwarnings("ignore")
 
 
@@ -198,7 +200,7 @@ def render(data: dict):
         height=500,
         margin=dict(l=40, r=20, t=60, b=40)
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Multi-indicator forecast comparison ──────────────────────────
     st.markdown("### 📊 Multi-Indicator Forecast Table")
@@ -270,7 +272,7 @@ def render(data: dict):
         yaxis=dict(gridcolor="#2C3E50", title=indicator),
         margin=dict(l=40, r=20, t=20, b=40)
     )
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Raw data download ─────────────────────────────────────────────
     with st.expander("📋 Raw & Forecast Data"):

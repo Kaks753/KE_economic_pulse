@@ -12,6 +12,8 @@ import plotly.express as px
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 import warnings
+
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
 warnings.filterwarnings("ignore")
 
 
@@ -178,7 +180,7 @@ def render(data: dict):
         yaxis=dict(gridcolor="#2C3E50", title="Anomaly Score (higher = more anomalous)"),
         margin=dict(l=40, r=20, t=20, b=40)
     )
-    st.plotly_chart(fig_score, use_container_width=True)
+    st.plotly_chart(fig_score, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Indicator with anomaly highlights ────────────────────────────
     if viz_indicator and viz_indicator in feat_df.columns:
@@ -219,7 +221,7 @@ def render(data: dict):
             yaxis=dict(gridcolor="#2C3E50", title=viz_indicator),
             margin=dict(l=40, r=20, t=20, b=40)
         )
-        st.plotly_chart(fig_ind, use_container_width=True)
+        st.plotly_chart(fig_ind, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Anomaly table ────────────────────────────────────────────────
     st.markdown("### 🚨 Detected Anomalous Years")
@@ -256,7 +258,7 @@ def render(data: dict):
         title=dict(text="Indicator Correlation with Anomaly Severity",
                    font=dict(color="white", size=14))
     )
-    st.plotly_chart(fig_corr, use_container_width=True)
+    st.plotly_chart(fig_corr, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Insight box ──────────────────────────────────────────────────
     st.markdown(f"""

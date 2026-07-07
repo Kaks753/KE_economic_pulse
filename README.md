@@ -56,7 +56,7 @@
 |---------|---------|
 | 💳 **M-Pesa Effect** | Financial inclusion rose 26% → 85% (2007-2023). Poverty fell 46.8% → 33.5%. ML confirms mobile money is #1 poverty predictor |
 | 🗺️ **County Gap** | 69 percentage point poverty gap — Wajir (82.4%) vs Kiambu (13.2%) |
-| 🎓 **Youth Crisis** | 61.5% youth unemployment — **4.5× global average** (13.6%) |
+| 🎓 **Youth Crisis** | Youth unemployment remains a structural challenge — above the global average (~13.6%) |
 | 📈 **Growth Resilient** | Kenya averaged ~5.2% GDP growth 2000-2023 despite COVID, elections, drought |
 | ⚡ **Power Divide** | Electricity access: 10.8% (Turkana) to 92.4% (Nairobi) |
 | 💰 **Diaspora Power** | Remittances hit $4.2B (2023) — now larger than FDI inflows |

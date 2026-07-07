@@ -11,12 +11,14 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 import warnings
+
+from utils.chart_config import PLOTLY_CONFIG, dark_layout
 warnings.filterwarnings("ignore")
 
 
 BASELINE = {
     "poverty":            33.5,
-    "youth_unemployment": 61.5,
+    "youth_unemployment": 15.2,
     "gini":               40.8,
     "gdp_growth":          4.8,
     "financial_inclusion": 85.1,
@@ -214,7 +216,7 @@ def render(data: dict):
                    font=dict(color="white", size=14)),
         margin=dict(l=10, r=10, t=50, b=40)
     )
-    st.plotly_chart(fig_wf, use_container_width=True)
+    st.plotly_chart(fig_wf, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Before / After comparison bar chart ──────────────────────────
     st.markdown("### 📈 Before vs After Scenario")
@@ -239,7 +241,7 @@ def render(data: dict):
         yaxis=dict(gridcolor="#2C3E50", title="Value"),
         margin=dict(l=10, r=10, t=20, b=50)
     )
-    st.plotly_chart(fig_ba, use_container_width=True)
+    st.plotly_chart(fig_ba, use_container_width=True, config=PLOTLY_CONFIG)
 
     # ── Scenario summary ──────────────────────────────────────────────
     total_poverty_red = BASELINE["poverty"] - projected["poverty"]

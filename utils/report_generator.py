@@ -7,8 +7,8 @@ import io
 from datetime import datetime
 
 try:
-    from reportlab.lib.pagesizes import A4
-    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4 as _A4
+    from reportlab.lib import colors as _rlcolors
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.units import cm, mm
     from reportlab.platypus import (
@@ -19,32 +19,48 @@ try:
     from reportlab.platypus.flowables import HRFlowable
     from reportlab.graphics.shapes import Drawing, Rect, Line, String
     from reportlab.graphics import renderPDF
+    A4 = _A4
     REPORTLAB_OK = True
 except ImportError:
+    _rlcolors = None
     REPORTLAB_OK = False
 
+# ── Stub classes when reportlab is unavailable ───────────────────────
+class _Stub:
+    def __getattr__(self, _): return self
+    def __call__(self, *_, **__): return None
+    def __getitem__(self, _): return self
+
+if not REPORTLAB_OK:
+    A4 = (595, 842)
+    Drawing = _Stub
+    Rect = _Stub
+    Line = _Stub
+    String = _Stub
+    TA_CENTER = TA_LEFT = TA_RIGHT = TA_JUSTIFY = 0
+    colors = _Stub()
 
 # ── Brand colour palette ──────────────────────────────────────────────
-NAVY        = colors.HexColor("#1B4F72")   # primary brand navy
-NAVY_DARK   = colors.HexColor("#0D2635")   # deep navy
-BLUE        = colors.HexColor("#2980B9")   # accent blue
-BLUE_LIGHT  = colors.HexColor("#AED6F1")   # light blue tint
-TEAL        = colors.HexColor("#0E6655")   # teal accent
-GREEN       = colors.HexColor("#1E8449")   # positive
-GREEN_LIGHT = colors.HexColor("#27AE60")
-RED         = colors.HexColor("#C0392B")   # critical
-ORANGE      = colors.HexColor("#D35400")   # warning
-AMBER       = colors.HexColor("#F39C12")
-LIGHT_BG    = colors.HexColor("#EBF5FB")   # row alternating
-ALT_BG      = colors.HexColor("#D6EAF8")
-RULE_COLOR  = colors.HexColor("#2980B9")   # horizontal rule
-SECTION_BG  = colors.HexColor("#F8FBFF")   # section shading
-GREY_LIGHT  = colors.HexColor("#D5D8DC")
-GREY_TXT    = colors.HexColor("#566573")
-DARK_TEXT   = colors.HexColor("#1C2833")
-WHITE       = colors.white
-OFF_WHITE   = colors.HexColor("#FAFAFA")
-HEADER_BG   = colors.HexColor("#F0F7FF")   # very pale blue header bg
+NAVY        = _rlcolors.HexColor("#1B4F72") if _rlcolors else None
+NAVY_DARK   = _rlcolors.HexColor("#0D2635") if _rlcolors else None
+BLUE        = _rlcolors.HexColor("#2980B9") if _rlcolors else None
+BLUE_LIGHT  = _rlcolors.HexColor("#AED6F1") if _rlcolors else None
+TEAL        = _rlcolors.HexColor("#0E6655") if _rlcolors else None
+GREEN       = _rlcolors.HexColor("#1E8449") if _rlcolors else None
+GREEN_LIGHT = _rlcolors.HexColor("#27AE60") if _rlcolors else None
+RED         = _rlcolors.HexColor("#C0392B") if _rlcolors else None
+ORANGE      = _rlcolors.HexColor("#D35400") if _rlcolors else None
+AMBER       = _rlcolors.HexColor("#F39C12") if _rlcolors else None
+LIGHT_BG    = _rlcolors.HexColor("#EBF5FB") if _rlcolors else None
+ALT_BG      = _rlcolors.HexColor("#D6EAF8") if _rlcolors else None
+RULE_COLOR  = _rlcolors.HexColor("#2980B9") if _rlcolors else None
+SECTION_BG  = _rlcolors.HexColor("#F8FBFF") if _rlcolors else None
+GREY_LIGHT  = _rlcolors.HexColor("#D5D8DC") if _rlcolors else None
+GREY_TXT    = _rlcolors.HexColor("#566573") if _rlcolors else None
+DARK_TEXT   = _rlcolors.HexColor("#1C2833") if _rlcolors else None
+WHITE       = _rlcolors.white if _rlcolors else None
+OFF_WHITE   = _rlcolors.HexColor("#FAFAFA") if _rlcolors else None
+HEADER_BG   = _rlcolors.HexColor("#F0F7FF") if _rlcolors else None
 
 
 def _safe_kpis(data: dict) -> dict:
@@ -67,9 +83,9 @@ def _safe_kpis(data: dict) -> dict:
     except Exception:
         pov_val, mpesa_u, fin_inc, remit = 33.5, 41.0, 85.1, 4.2
     try:
-        yu_val = float(yu["Youth_Unemployment_Pct"].iloc[-1])   if yu is not None else 61.5
+        yu_val = float(yu["Youth_Unemployment_Pct"].iloc[-1])   if yu is not None else 15.2
     except Exception:
-        yu_val = 61.5
+        yu_val = 15.2
     return dict(gdp_val=gdp_val, inf_val=inf_val, unemp=unemp, gini=gini,
                 pov_val=pov_val, mpesa_u=mpesa_u, fin_inc=fin_inc,
                 remit=remit, yu_val=yu_val)

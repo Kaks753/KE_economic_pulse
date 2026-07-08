@@ -1,3 +1,4 @@
+🗺️ County Poverty Snapshot — Top 10 vs Bottom 10
 TypeError: This app has encountered an error. The original error message is redacted to prevent data leaks. Full error details have been recorded in the logs (if you're on Streamlit Cloud, click on 'Manage app' in the lower right of your app).
 Traceback:
 File "/mount/src/ke_economic_pulse/app.py", line 547, in <module>
@@ -9,12 +10,14 @@ File "/home/adminuser/venv/lib/python3.14/site-packages/streamlit/navigation/pag
 File "/mount/src/ke_economic_pulse/app.py", line 406, in page_overview
     render_overview()
     ~~~~~~~~~~~~~~~^^
-File "/mount/src/ke_economic_pulse/app.py", line 241, in render_overview
-    fig2.update_layout(
-    ~~~~~~~~~~~~~~~~~~^
-        **dark_layout(height=340, margin={"l": 10, "r": 10, "t": 30, "b": 20}),
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        legend=dict(bgcolor="#1C2833", font=dict(color="white"), x=0, y=1.1, orientation="h"),
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/mount/src/ke_economic_pulse/app.py", line 261, in render_overview
+    fig_snap.update_layout(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        **dark_layout(height=360, margin={"l": 10, "r": 10, "t": 20, "b": 10}, use_legend=False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        xaxis=dict(gridcolor="#2C3E50", tickangle=-30),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        legend=dict(bgcolor="#1C2833", font=dict(color="white")),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     )
     ^

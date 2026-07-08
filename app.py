@@ -238,10 +238,8 @@ def render_overview():
             line=dict(color="#27AE60", width=2, dash="dot"),
             name="M-Pesa Users (×2 scaled)"
         ))
-        fig2.update_layout(
-            **dark_layout(height=340, margin={"l": 10, "r": 10, "t": 30, "b": 20}, use_legend=False),
-            legend=dict(bgcolor="#1C2833", font=dict(color="white"), x=0, y=1.1, orientation="h"),
-        )
+        fig2.update_layout(**dark_layout(height=340, margin={"l": 10, "r": 10, "t": 30, "b": 20}))
+        fig2.update_layout(legend=dict(bgcolor="#1C2833", font=dict(color="white"), x=0, y=1.1, orientation="h"))
         st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
 
     # County snapshot
@@ -258,11 +256,8 @@ def render_overview():
         barmode="group",
         labels={"Poverty_Rate": "Poverty Rate (%)"},
     )
-    fig_snap.update_layout(
-        **dark_layout(height=360, margin={"l": 10, "r": 10, "t": 20, "b": 10}, use_legend=False),
-        xaxis=dict(gridcolor="#2C3E50", tickangle=-30),
-        legend=dict(bgcolor="#1C2833", font=dict(color="white")),
-    )
+    fig_snap.update_layout(**dark_layout(height=360, margin={"l": 10, "r": 10, "t": 20, "b": 10}))
+    fig_snap.update_layout(xaxis=dict(gridcolor="#2C3E50", tickangle=-30), legend=dict(bgcolor="#1C2833", font=dict(color="white")))
     st.plotly_chart(fig_snap, use_container_width=True, config=PLOTLY_CONFIG)
 
     # Youth unemployment trend
@@ -282,10 +277,8 @@ def render_overview():
         annotation_text="🌍 Global avg: 13.6%",
         annotation_font_color="#27AE60"
     )
-    fig_yu.update_layout(
-        **dark_layout(height=300, ytitle="Youth Unemployment (%)", margin={"l": 10, "r": 10, "t": 20, "b": 20}, use_legend=False),
-        legend=dict(bgcolor="#1C2833", font=dict(color="white")),
-    )
+    fig_yu.update_layout(**dark_layout(height=300, ytitle="Youth Unemployment (%)", margin={"l": 10, "r": 10, "t": 20, "b": 20}))
+    fig_yu.update_layout(legend=dict(bgcolor="#1C2833", font=dict(color="white")))
     st.plotly_chart(fig_yu, use_container_width=True, config=PLOTLY_CONFIG)
 
     # Report download
